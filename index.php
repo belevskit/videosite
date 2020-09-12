@@ -75,78 +75,24 @@
       <header>
         <h1>Browse Videos</h1>
       </header>
-      <article class="video">
-        <figure>
-        <a class="fancybox fancybox.iframe" href="//www.youtube.com/embed/zH3ZohGnjcg"><img class="videoThumb" src="//i1.ytimg.com/vi/zH3ZohGnjcg/mqdefault.jpg"></a>
-        </figure>
-        <h2 class="videoTitle">Kumru Ballad</h2>
-      </article>
-      <article class="video">
-        <figure>
-        <a class="fancybox fancybox.iframe" href="//player.vimeo.com/video/26890275"><img class="videoThumb" src="//secure-b.vimeocdn.com/ts/178/010/178010767_295.jpg"></a>
-        </figure>
-        <h2 class="videoTitle">Kumru Orchestral</h2>
-      </article>
-      <article class="video">
-        <figure>
-        <a class="fancybox fancybox.iframe" href="//www.youtube.com/embed/paG__3FBLzI"><img class="videoThumb" src="//i1.ytimg.com/vi/paG__3FBLzI/mqdefault.jpg"></a>
-        </figure>
-        <h2 class="videoTitle">Mesopotamia</h2>
-      </article>
-      <article class="video">
-        <figure>
-        <a class="fancybox fancybox.iframe" href="//www.youtube.com/embed/OF9fneQ50Us"><img class="videoThumb" src="//i1.ytimg.com/vi/OF9fneQ50Us/mqdefault.jpg"></a>
-        </figure>
-        <h2 class="videoTitle">Kreutzer</h2>
-      </article>
-      <article class="video">
-        <figure>
-        <a class="fancybox fancybox.iframe" href="//www.youtube.com/embed/1swsXJuclGM"><img class="videoThumb" src="//i1.ytimg.com/vi/1swsXJuclGM/mqdefault.jpg"></a>
-        </figure>
-        <h2 class="videoTitle">Bodrum</h2>
-      </article>
-      <article class="video">
-        <figure>
-        <a class="fancybox fancybox.iframe" href="//www.youtube.com/embed/WQ3Gf9PLUO8"><img class="videoThumb" src="//i1.ytimg.com/vi/WQ3Gf9PLUO8/mqdefault.jpg"></a>
-        </figure>
-        <h2 class="videoTitle">Mesopotamia</h2>
-      </article>
-      <article class="video">
-        <figure>
-        <a class="fancybox fancybox.iframe" href="//player.vimeo.com/video/7533229"><img class="videoThumb" src="//secure-b.vimeocdn.com/ts/326/392/32639200_295.jpg"></a>
-        </figure>
-        <h2 class="videoTitle">Symhpony in Red</h2>
-      </article>
-      <article class="video">
-        <figure>
-        <a class="fancybox fancybox.iframe" href="//www.youtube.com/embed/bYy1yKqspYs"><img class="videoThumb" src="//i1.ytimg.com/vi/bYy1yKqspYs/mqdefault.jpg"></a>
-        </figure>
-        <h2 class="videoTitle">Paganini Jazz</h2>
-      </article>
-      <article class="video">
-        <figure>
-        <a class="fancybox fancybox.iframe" href="//www.youtube.com/embed/Vx3GkAzwVWM"><img class="videoThumb" src="//i1.ytimg.com/vi/Vx3GkAzwVWM/mqdefault.jpg"></a>
-        </figure>
-        <h2 class="videoTitle">Say Plays Say</h2>
-      </article>
-      <article class="video">
-        <figure>
-        <a class="fancybox fancybox.iframe" href="//www.youtube.com/embed/r2jkR_rUaMY"><img class="videoThumb" src="//i1.ytimg.com/vi/r2jkR_rUaMY/mqdefault.jpg"></a>
-        </figure>
-        <h2 class="videoTitle">Say in Switzerland</h2>
-      </article>
-      <article class="video">
-        <figure>
-        <a class="fancybox fancybox.iframe" href="//www.youtube.com/embed/rw7bkVPtYmY"><img class="videoThumb" src="//i1.ytimg.com/vi/rw7bkVPtYmY/mqdefault.jpg"></a>
-        </figure>
-        <h2 class="videoTitle">Serenad Bağcan</h2>
-      </article>
-      <article class="video">
-        <figure>
-        <a class="fancybox fancybox.iframe" href="//www.youtube.com/embed/njnuqtPAWDw"><img class="videoThumb" src="//i1.ytimg.com/vi/njnuqtPAWDw/mqdefault.jpg"></a>
-        </figure>
-        <h2 class="videoTitle">Mozart Maratonu</h2>
-      </article>
+        <?php
+        // connect to database
+        $db = mysqli_connect('localhost', 'root', '', 'trajche');
+        $query = "SELECT filename FROM videos";
+        $results = mysqli_query($db, $query);
+
+        while ($list = mysqli_fetch_assoc($results)) {
+            ?>
+                <article class="video">
+                <figure> <?php
+                echo '<a class="fancybox fancybox.iframe" target="_blank" href="playvideo.php?url=' . urlencode($_SERVER['REQUEST_URI'] . 'users/' . $list['filename']) . '"><img class="videoThumb" src="//i1.ytimg.com/vi/njnuqtPAWDw/mqdefault.jpg"></a>';
+                ?>
+                </figure>
+                <h2 class="videoTitle">User video</h2>
+              </article>
+        <?php
+        }
+        ?>
     </section>
 
   </div>

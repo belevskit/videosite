@@ -37,7 +37,7 @@ if (isset($_REQUEST['form_action'])) {
 					  VALUES('$user', '$email', '$password')";
             mysqli_query($db, $query);
 
-            $_SESSION['user'] = $username;
+            $_SESSION['user'] = $email;
             $_SESSION['success'] = "You are now logged in";
             header('location: ../index.php');
         }
