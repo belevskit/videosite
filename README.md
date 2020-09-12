@@ -3,6 +3,9 @@
 ##Setup information
 Use the below SQL code to setup the database before attempting to use this website.
 Make sure to change MySQL connection information (user, password, hostname)
+
+Also make sure to create the `uploads` folder in the website root directory (where you copied the files of this website)
+for proper functionality. The upload folder should have write permissions enabled!
 ### SQL code for table creation
 ~~~~sql
 -- phpMyAdmin SQL Dump
