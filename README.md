@@ -6,6 +6,8 @@ Make sure to change MySQL connection information (user, password, hostname)
 
 Also make sure to create the `uploads` folder in the website root directory (where you copied the files of this website)
 for proper functionality. The upload folder should have write permissions enabled!
+
+Create a database named `trajche` before using the site.
 ### SQL code for table creation
 ~~~~sql
 -- phpMyAdmin SQL Dump
