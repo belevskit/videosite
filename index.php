@@ -21,6 +21,41 @@
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+
+      <style type="text/css">
+          #myInput {
+              background-image: url('/css/searchicon.png'); /* Add a search icon to input */
+              background-position: 10px 12px; /* Position the search icon */
+              background-repeat: no-repeat; /* Do not repeat the icon image */
+              width: 100%; /* Full-width */
+              font-size: 16px; /* Increase font-size */
+              padding: 12px 20px 12px 40px; /* Add some padding */
+              border: 1px solid #ddd; /* Add a grey border */
+              margin-bottom: 12px; /* Add some space below the input */
+          }
+      </style>
+
+      <script>
+          function myFunction() {
+              // Declare variables
+              var input, filter, ul, li, a, i, txtValue;
+              input = document.getElementById('myInput');
+              filter = input.value.toUpperCase();
+              ul = document.getElementById("all-videos");
+              li = ul.getElementsByTagName('video');
+
+              // Loop through all list items, and hide those who don't match the search query
+              for (i = 0; i < li.length; i++) {
+                  a = li[i].getElementsByTagName("h2")[0];
+                  txtValue = a.textContent || a.innerText;
+                  if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                      li[i].style.display = "";
+                  } else {
+                      li[i].style.display = "none";
+                  }
+              }
+          }
+      </script>
   </head>
   <body>
 
@@ -72,10 +107,12 @@
   </nav>
 
   <div class="container">
+    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for videos..">
     <section class="second clearfix">
       <header>
         <h1>Browse Videos</h1>
       </header>
+        <div id="all-videos">
         <?php
         // connect to database
         //$db = mysqli_connect('localhost', 'root', '', 'trajche');
@@ -112,6 +149,7 @@
         <?php
         }
         ?>
+        </div>
     </section>
 
   </div>
