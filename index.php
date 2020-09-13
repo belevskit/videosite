@@ -29,9 +29,11 @@
               background-repeat: no-repeat; /* Do not repeat the icon image */
               width: 100%; /* Full-width */
               font-size: 16px; /* Increase font-size */
+              font-weight: bold;
               padding: 12px 20px 12px 40px; /* Add some padding */
-              border: 1px solid #ddd; /* Add a grey border */
+              border: 1px solid #000000; /* Add a grey border */
               margin-bottom: 12px; /* Add some space below the input */
+              color: green;
           }
       </style>
 
@@ -42,7 +44,7 @@
               input = document.getElementById('myInput');
               filter = input.value.toUpperCase();
               ul = document.getElementById("all-videos");
-              li = ul.getElementsByTagName('video');
+              li = ul.getElementsByTagName('article');
 
               // Loop through all list items, and hide those who don't match the search query
               for (i = 0; i < li.length; i++) {
@@ -107,8 +109,9 @@
   </nav>
 
   <div class="container">
-    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for videos..">
+
     <section class="second clearfix">
+        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for videos..">
       <header>
         <h1>Browse Videos</h1>
       </header>
