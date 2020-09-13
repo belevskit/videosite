@@ -1,5 +1,5 @@
 <?php
-
+include_once "config/config.php";
 session_start();
 
 // variable declaration
@@ -9,7 +9,7 @@ $errors = array();
 $_SESSION['success'] = "";
 
 // connect to database
-$db = mysqli_connect('localhost', 'root', '', 'trajche');
+$db = mysqli_connect($DB_HOST, $DB_USER, $DB_PASSWORD, $DATABASE_NAME);
 
 // REGISTER USER
 if (isset($_REQUEST['form_action'])) {
