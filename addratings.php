@@ -63,8 +63,7 @@ if(isset($_POST['videoid']) && isset($_POST['rating'])) {
 
     $ratings = mysqli_fetch_assoc($results);
 
-    echo "<p>Likes: " . $ratings['likes'] . "</p>";
-    echo "<p>Dislikes: " . $ratings['dislikes'] . "</p>";
+    echo "<p>Likes: " . $ratings['likes'] . "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dislikes: " . $ratings['dislikes'] . "</p>";
 }
 
 ?>

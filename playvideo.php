@@ -184,8 +184,7 @@ else{
         }
     ?>
     <div id="all-likes">
-    <p>Likes: <?= $ratings['likes'] ?> </p>
-    <p>Dislikes: <?= $ratings['dislikes'] ?> </p>
+        <p>Likes: <?= $ratings['likes'] ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dislikes: <?= $ratings['dislikes'] ?></p>
     </div>
     <p>Comments</p>
     <ol id="all-comments-list">
