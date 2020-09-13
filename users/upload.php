@@ -49,20 +49,20 @@ if(isset($_SESSION['user'])) {
                 </li>
                 <?php if($user_logged_in == true) { ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="users/upload.php">Upload video</a>
+                        <a class="nav-link" href="upload.php">Upload video</a>
                     </li>
                 <?php } ?>
 
                 <?php if($user_logged_in == false) { ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="users/users.php?initial=login">Login</a>
+                        <a class="nav-link" href="users.php?initial=login">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="users/users.php?initial=register">Register</a>
+                        <a class="nav-link" href="users.php?initial=register">Register</a>
                     </li>
                 <?php } else { ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="users/logout.php">Logout</a>
+                        <a class="nav-link" href="logout.php">Logout</a>
                     </li>
                 <?php } ?>
             </ul>

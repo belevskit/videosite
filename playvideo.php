@@ -1,3 +1,35 @@
+<?php
+include_once "config/config.php";
+session_start();
+
+$db = mysqli_connect($DB_HOST, $DB_USER, $DB_PASSWORD, $DATABASE_NAME);
+
+
+$query = "CREATE TABLE IF NOT EXISTS `videodetails` (
+  `id` int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `videoid` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `thumbnail` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+mysqli_query($db, $query);
+
+
+$query = "CREATE TABLE IF NOT EXISTS `videoratings` (
+  `id` int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `videoid` int(11) NOT NULL,
+  `likes` int(11) NOT NULL,
+  `dislikes` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+mysqli_query($db, $query);
+
+$user_logged_in = false;
+if(isset($_SESSION['user'])) {
+    $user_logged_in = true;
+    $user = $_SESSION['user'];
+    $userid = $_SESSION['userid'];
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,17 +53,59 @@
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+
+    <script>
+        $(document).ready(function () {
+            $('#add-comment-button').click(function (e) {
+                e.preventDefault();
+                var comment = $('#comment').val();
+                var userid = <?= $userid ?>;
+                var videoid = <?= urldecode($_GET['id']) ?>;
+                $.ajax
+                ({
+                    type: "POST",
+                    url: "addcomment.php",
+                    data: { "userid": userid, "comment": comment, "videoid": videoid },
+                    success: function (data) {
+                        $('#all-comments-list').html(data);
+                        $('#add-comment-form')[0].reset();
+                    }
+                });
+            });
+            $('#add-like-button').click(function (e) {
+                e.preventDefault();
+                var rating = 'like';
+                var videoid = <?= urldecode($_GET['id']) ?>;
+                $.ajax
+                ({
+                    type: "POST",
+                    url: "addratings.php",
+                    data: { "rating": rating, "videoid": videoid },
+                    success: function (data) {
+                        $('#all-likes').html(data);
+                    }
+                });
+            });
+            $('#add-dislike-button').click(function (e) {
+                e.preventDefault();
+                var rating = 'dislike';
+                var videoid = <?= urldecode($_GET['id']) ?>;
+                $.ajax
+                ({
+                    type: "POST",
+                    url: "addratings.php",
+                    data: { "rating": rating, "videoid": videoid },
+                    success: function (data) {
+                        $('#all-likes').html(data);
+                    }
+                });
+            });
+        });
+    </script>
 </head>
 <body>
 
-<?php
-session_start();
 
-$user_logged_in = false;
-if(isset($_SESSION['user'])) {
-    $user_logged_in = true;
-}
-?>
 
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -43,7 +117,7 @@ if(isset($_SESSION['user'])) {
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Home
+                    <a class="nav-link" href="index.php">Home
                         <span class="sr-only">(current)</span>
                     </a>
                 </li>
@@ -74,7 +148,14 @@ if(isset($_SESSION['user'])) {
 <div class="container" style="margin-top: 130px;">
 
     <div class="page-header">
-        <h1>Video player</h1>
+        <?php
+        if(isset($_GET['title'])) {
+            $title = urldecode($_GET['title']);
+            echo "<h1>$title</h1>";
+        } else {
+            echo '<h1>Video player</h1>';
+        }
+        ?>
     </div>
 
 <?php
@@ -89,6 +170,54 @@ else{
 }
 ?>
 
+</div>
+
+<div class="container" style="margin-top: 20px;">
+    <?php
+        if(isset($_GET['id'])) {
+            $videoid = urldecode($_GET['id']);
+
+            $query = "SELECT likes, dislikes FROM videoratings WHERE videoid='$videoid'";
+            $results = mysqli_query($db, $query);
+
+            $ratings = mysqli_fetch_assoc($results);
+        }
+    ?>
+    <div id="all-likes">
+    <p>Likes: <?= $ratings['likes'] ?> </p>
+    <p>Dislikes: <?= $ratings['dislikes'] ?> </p>
+    </div>
+    <p>Comments</p>
+    <ol id="all-comments-list">
+        <?php
+            $query = "SELECT userid, comment FROM videocomments WHERE videoid='$videoid'";
+            $results = mysqli_query($db, $query);
+
+            while($comments = mysqli_fetch_assoc($results)) {
+                $userid = $comments['userid'];
+                $query2 = "SELECT username FROM users WHERE id='$userid'";
+                $results2 = mysqli_query($db, $query2);
+                $username = mysqli_fetch_assoc($results2);
+                $username = $username['username'];
+                echo "<li><strong>" . $username . '</strong> --- ' . $comments['comment'] . "</li>";
+            }
+        ?>
+    </ol>
+    <?php if($user_logged_in) { ?>
+        <form id="add-comment-form" method="post" action="">
+            <div class="form-group">
+                <label for="comment">Add comment</label>
+                <input type="text" class="form-control" id="comment">
+            </div>
+            <button id="add-comment-button" type="submit" class="btn btn-primary">Submit comment</button>
+        </form>
+        <form id="like-form" method="post" action="" style="margin-top: 20px;">
+            <button id="add-like-button" type="submit" class="btn btn-primary">Like video</button>
+        </form>
+        <form id="dislike-form" method="post" action="">
+            <button id="add-dislike-button" type="submit" class="btn btn-primary">Dislike video</button>
+        </form>
+    <?php } ?>
 </div>
 
 <div class="container" style="margin-top: 30px;">

@@ -32,13 +32,31 @@ if (isset($_REQUEST['form_action'])) {
 
         // register user if there are no errors in the form
         if (count($errors) == 0) {
+            $query = "SELECT * FROM users WHERE email='$email'";
+            $results = mysqli_query($db, $query);
+
+            if (mysqli_num_rows($results) == 1) {
+                array_push($errors, "There is already an account with the given email. Please login or use a different email!");
+                header('location: ../index.php');
+            }
+
             $password = md5($password1);//encrypt the password before saving in the database
             $query = "INSERT INTO users (username, email, password) 
 					  VALUES('$user', '$email', '$password')";
             mysqli_query($db, $query);
 
-            $_SESSION['user'] = $email;
-            $_SESSION['success'] = "You are now logged in";
+            $query = "SELECT id FROM users WHERE email='$email'";
+            $results = mysqli_query($db, $query);
+
+            if (mysqli_num_rows($results) == 1) {
+                $id = mysqli_fetch_assoc($results);
+                $_SESSION['user'] = $email;
+                $_SESSION['userid'] = $id['id'];
+                $_SESSION['success'] = "You are now logged in";
+            }
+            else {
+                array_push($errors, "Failed to register user in database, please try again or contact system admin!");
+            }
             header('location: ../index.php');
         }
         else{
@@ -62,7 +80,9 @@ if (isset($_REQUEST['form_action'])) {
             $results = mysqli_query($db, $query);
 
             if (mysqli_num_rows($results) == 1) {
+                $id = mysqli_fetch_assoc($results);
                 $_SESSION['user'] = $email;
+                $_SESSION['userid'] = $id['id'];
                 $_SESSION['success'] = "You are now logged in";
                 header('location: ../index.php');
             }else {

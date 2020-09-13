@@ -25,6 +25,7 @@
   <body>
 
   <?php
+    include_once "config/config.php";
     session_start();
 
     $user_logged_in = false;
@@ -77,18 +78,36 @@
       </header>
         <?php
         // connect to database
-        $db = mysqli_connect('localhost', 'root', '', 'trajche');
-        $query = "SELECT filename FROM videos";
+        //$db = mysqli_connect('localhost', 'root', '', 'trajche');
+        $db = mysqli_connect($DB_HOST, $DB_USER, $DB_PASSWORD, $DATABASE_NAME);
+        $query = "CREATE TABLE IF NOT EXISTS `videos` (
+          `id` int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+          `userid` int(11) NOT NULL,
+          `filename` varchar(255) NOT NULL
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        mysqli_query($db, $query);
+        $query = "CREATE TABLE IF NOT EXISTS `videodetails` (
+          `id` int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+          `videoid` int(11) NOT NULL,
+          `title` varchar(255) NOT NULL,
+          `thumbnail` varchar(255) NOT NULL
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        mysqli_query($db, $query);
+        $query = "SELECT id, filename FROM videos";
         $results = mysqli_query($db, $query);
 
         while ($list = mysqli_fetch_assoc($results)) {
+            $vidid = $list['id'];
+            $query2 = "SELECT title, thumbnail FROM videodetails WHERE videoid='$vidid'";
+            $results2 = mysqli_query($db, $query2);
+            $viddetails = mysqli_fetch_assoc($results2)
             ?>
                 <article class="video">
                 <figure> <?php
-                echo '<a class="fancybox fancybox.iframe" target="_blank" href="playvideo.php?url=' . urlencode($_SERVER['REQUEST_URI'] . 'users/' . $list['filename']) . '"><img class="videoThumb" src="//i1.ytimg.com/vi/njnuqtPAWDw/mqdefault.jpg"></a>';
+                echo '<a class="fancybox fancybox.iframe" target="_blank" href="playvideo.php?id=' . $vidid . '&url=' . urlencode($_SERVER['REQUEST_URI'] . 'users/' . $list['filename']) . '&title=' . urlencode($viddetails['title']) .'"><img class="videoThumb" src="' . $_SERVER['REQUEST_URI'] . 'users/' . $viddetails['thumbnail'] . '"></a>';
                 ?>
                 </figure>
-                <h2 class="videoTitle">User video</h2>
+                <h2 class="videoTitle"><?= $viddetails['title'] ?></h2>
               </article>
         <?php
         }
