@@ -11,7 +11,7 @@
  Target Server Version : 100413
  File Encoding         : 65001
 
- Date: 06/07/2022 04:43:39
+ Date: 06/07/2022 05:13:02
 */
 
 SET NAMES utf8mb4;
@@ -42,12 +42,6 @@ CREATE TABLE `videocomments`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of videocomments
--- ----------------------------
-INSERT INTO `videocomments` VALUES (15, 20, 1, 'Test Data');
-INSERT INTO `videocomments` VALUES (16, 20, 1, 'test data');
-
--- ----------------------------
 -- Table structure for videodetails
 -- ----------------------------
 DROP TABLE IF EXISTS `videodetails`;
@@ -59,11 +53,6 @@ CREATE TABLE `videodetails`  (
   `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of videodetails
--- ----------------------------
-INSERT INTO `videodetails` VALUES (16, 20, 'test', '../uploads/edit and delete button_1657038237.png', 'test');
 
 -- ----------------------------
 -- Table structure for videoratings
@@ -78,11 +67,6 @@ CREATE TABLE `videoratings`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of videoratings
--- ----------------------------
-INSERT INTO `videoratings` VALUES (19, 20, 0, 0);
-
--- ----------------------------
 -- Table structure for videos
 -- ----------------------------
 DROP TABLE IF EXISTS `videos`;
@@ -92,10 +76,5 @@ CREATE TABLE `videos`  (
   `filename` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of videos
--- ----------------------------
-INSERT INTO `videos` VALUES (20, 1, '../uploads/1_1657038228.mp4');
 
 SET FOREIGN_KEY_CHECKS = 1;
