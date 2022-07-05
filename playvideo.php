@@ -151,7 +151,7 @@ if(isset($_SESSION['user'])) {
         <?php
         if(isset($_GET['title'])) {
             $title = urldecode($_GET['title']);
-            echo "<h1>$title</h1>";
+            echo "<h1 id='video-title'>$title</h1>";
         } else {
             echo '<h1>Video player</h1>';
         }
@@ -174,64 +174,137 @@ else{
 
 <div class="container" style="margin-top: 20px;">
     <?php
-        if(isset($_GET['id'])) {
-            $videoid = urldecode($_GET['id']);
+    if(isset($_GET['id'])) {
+        $videoid = urldecode($_GET['id']);
 
-            $query = "SELECT likes, dislikes FROM videoratings WHERE videoid='$videoid'";
-            $results = mysqli_query($db, $query);
+        $query = "SELECT likes, dislikes FROM videoratings WHERE videoid='$videoid'";
+        $results = mysqli_query($db, $query);
 
-            $ratings = mysqli_fetch_assoc($results);
+        $ratings = mysqli_fetch_assoc($results);
+    }
+    ?>
+    <div id="all-likes" class="d-flex justify-content-end">
+        <div style="border: double;">Likes: <?= $ratings['likes'] ?> </div>
+        <div class="ml-lg-3" style="border: double;">Dislikes: <?= $ratings['dislikes'] ?></div>
+    </div>
+    <?php
+        if(isset($_GET['descrip'])) {
+            $descrip = urldecode($_GET['descrip']);
+            echo "<div><h3>Description:</h3><h4 id='video-descript' style='border: double;'>$descrip</h4></div>";
+        } else {
+            echo '<h3></h3>';
         }
     ?>
-    <div id="all-likes">
-        <p>Likes: <?= $ratings['likes'] ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dislikes: <?= $ratings['dislikes'] ?></p>
-    </div>
-    <p>Comments</p>
-    <ol id="all-comments-list">
-        <?php
-            $query = "SELECT userid, comment FROM videocomments WHERE videoid='$videoid'";
-            $results = mysqli_query($db, $query);
 
-            while($comments = mysqli_fetch_assoc($results)) {
-                $userid = $comments['userid'];
-                $query2 = "SELECT username FROM users WHERE id='$userid'";
-                $results2 = mysqli_query($db, $query2);
-                $username = mysqli_fetch_assoc($results2);
-                $username = $username['username'];
-                echo "<li><strong>" . $username . '</strong> --- ' . $comments['comment'] . "</li>";
-            }
-        ?>
-    </ol>
+    <div>
+        <div class="mt-lg-5">Comments</div>
+        <div>
+            <ol id="all-comments-list" style="border: double;">
+                <?php
+                    $query = "SELECT userid, comment FROM videocomments WHERE videoid='$videoid'";
+                    $results = mysqli_query($db, $query);
+
+                    while($comments = mysqli_fetch_assoc($results)) {
+                        $userid = $comments['userid'];
+                        $query2 = "SELECT username FROM users WHERE id='$userid'";
+                        $results2 = mysqli_query($db, $query2);
+                        $username = mysqli_fetch_assoc($results2);
+                        $username = $username['username'];
+                        echo "<li style='margin: 0 !important;'><strong>" . $username . '</strong> --- ' . $comments['comment'] . "</li>";
+                    }
+                ?>
+            </ol>
+        </div>
+    </div>
     <?php if($user_logged_in) { ?>
         <form id="add-comment-form" method="post" action="">
             <div class="form-group">
                 <label for="comment">Add comment</label>
-                <input type="text" class="form-control" id="comment">
+                <input type="text" class="form-control" style="border: double;" id="comment" required>
             </div>
             <button id="add-comment-button" type="submit" class="btn btn-primary">Submit comment</button>
         </form>
-        <form id="like-form" method="post" action="" style="margin-top: 20px;">
-            <button id="add-like-button" type="submit" class="btn btn-primary">Like video</button>
-        </form>
-        <form id="dislike-form" method="post" action="">
-            <button id="add-dislike-button" type="submit" class="btn btn-primary">Dislike video</button>
-        </form>
+        <div class="mt-lg-5 ml-1">
+            <div class="row">
+            <form id="like-form" method="post" action="">
+                <button id="add-like-button" type="submit" class="btn btn-primary">Like video</button>
+            </form>
+            <form id="dislike-form" method="post" action="" class="ml-lg-5">
+                <button id="add-dislike-button" type="submit" class="btn btn-primary">Dislike video</button>
+            </form>
+            </div>
+        </div>
     <?php } ?>
 </div>
 
-<div class="container" style="margin-top: 30px;">
-    <p><a href="index.php">Go back</a></p>
+<div class="container mt-lg-5 mb-lg-5">
+    <div class="row">
+        <div class=""><a href="index.php" class="btn btn-lg btn-primary">Go back</a></div>
+        <?php if($user_logged_in) { ?>
+            <button id="btn-edit" type="button" class="btn btn-lg btn-light ml-lg-5" data-toggle="modal" data-target="#editModal">Edit</button>
+            <button id="btn-delete" type="button" class="btn btn-lg btn-danger ml-lg-5" data-toggle="modal" data-target="#myModal">Delete</button>
+        <?php } ?>
+    </div>
 </div>
 
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" style="color: black;">Are you Sure?</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" style="color: black">
+                <p>Are you sure to Delete the Video really?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-real-delete" type="button" class="btn btn-lg btn-success">Delete</button>
+                <button type="button" class="btn btn-lg btn-dark" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="editModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form method="post" enctype="multipart/form-data" action="editvideo.php">
+                <input class="hide" type="text" name="id" value="<?= urlencode($_GET['id'])?>" />
+                <div class="modal-header">
+                    <h4 class="modal-title" style="color: black;">Edit the Video Details</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" style="color: black">
+                    <div>
+                        <label>Video Title</label>
+                        <input type="text" class="form-control mb-4" name="title" style="width: 100%; border-color: black !important; color: black"
+                               id="modal-video-title" value="<?= urldecode($_GET['title'])?>" required/>
+                    </div>
+
+                    <div>
+                        <label>Thumbnail</label>
+                        <p class="text-left m-0" style="font-size: 16px; width: 100%;">(If you want to change the thumbnail, click the Browse button, Or, the original file is saved.)</p>
+                        <input type="file" class="fileupload mb-4" name="thumbnail" style="width: 100%; border-color: black !important; color: black"
+                               id="modal-video-thumbnail" value="<?= urldecode($_GET['title'])?>" />
+                    </div>
+                    <div>
+                        <label>Description</label>
+                        <input type="text" id="modal-video-description" name="descript" class="form-control" style="width: 100%;
+                                border-color: black!important; color: black;" value="<?= urldecode($_GET['descrip'])?>"/>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button id="btn-real-edit" type="submit" class="btn btn-lg btn-success">Edit</button>
+                    <button type="button" class="btn btn-lg btn-dark" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <!-- you need to include the ShieldUI CSS and JS assets in order for the Upload widget to work -->
 <link rel="stylesheet" type="text/css" href="http://www.shieldui.com/shared/components/latest/css/light-bootstrap/all.min.css" />
 <script type="text/javascript" src="http://www.shieldui.com/shared/components/latest/js/shieldui-all.min.js"></script>
 
-<script type="text/javascript">
-    jQuery(function ($) {
-        $("#files").shieldUpload();
-    });
-</script>
 <!-- Bootstrap Upload Control - END -->
 
 
@@ -246,5 +319,60 @@ else{
 <!-- Bootstrap core JavaScript -->
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(function ($) {
+            $("#files").shieldUpload();
+        });
+    $('#myModal').on('shown.bs.modal', function (e) {
+        $('#btn-real-delete').click(function () {
+            var videoid = <?= urldecode($_GET['id'])?>;
+            $.ajax({
+                type: "POST",
+                url: 'deletevideo.php',
+                data: {
+                    'videoid': videoid
+                },
+                success: function (data) {
+                    alert("Delete Successfully!");
+                    window.location = 'index.php';
+                }
+            });
+        });
+    });
+    //$('#editModal').on('shown.bs.modal', function (e) {
+    //    $('#modal-video-title').val($('#video-title').text());
+    //    $('#modal-video-descrip').val($('#video-descript').text());
+    //    $('#btn-real-edit').click(function () {
+    //        var title = $('#modal-video-title').val();
+    //        var descript = $('#modal-video-description').val();
+    //        var thumbnail = $('#editModal').find("[type='file'].fileupload");
+    //        var id = <?//= urlencode($_GET['id'])?>//;
+    //        var file = thumbnail[0].files[0];
+    //        var formData = new FormData();
+    //        // if (file)
+    //        //     formData.append('file', file, file.name);
+    //        $.ajax({
+    //            type: 'POST',
+    //            url: 'editvideo.php',
+    //            data: {
+    //                id: id,
+    //                title: title,
+    //                descript: descript,
+    //                thumbnail: formData
+    //            },
+    //            success: function (data) {
+    //                if (data) {
+    //                    alert("Update Successfully!");
+    //                    $('#video-title').text(title);
+    //                    $('#video-description').text(descript);
+    //                    $('#editModal').hide();
+    //                }
+    //
+    //            }
+    //        });
+    //    });
+    //});
+</script>
 </body>
 </html>

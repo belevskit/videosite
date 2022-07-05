@@ -27,7 +27,7 @@ $userid = $_SESSION['userid'];
 $total = count($_FILES['file']['name']);
 //var_dump($total);
 //var_dump($_FILES);
-?>
+?>  
 <html>
 <head>
     <meta charset="utf-8">
@@ -129,6 +129,11 @@ for( $i=0 ; $i < $total ; $i++ ) {
         <label for="<?= "input-thumbnail-$i" ?>">Image (thumbnail) for "<?= $_FILES['file']['name'][$i] ?>"</label>
         <?php
         echo '<input type="file" id="input-thumbnail-' . $i . '" placeholder="Select file" name="input-thumbnail-' . $i . '" required="">';
+        ?>
+        <br>
+        <label for="<?= "input-title-$i" ?>">Description for "<?= $_FILES['file']['name'][$i] ?>"</label>
+        <?php
+        echo '<input id="input-description-' . $i . '" type="text" name="input-description-' . $i . '" placeholder="Description" required="">';
         ?>
         <div class="clear"> </div>
         <div class="clear"> </div>

@@ -16,7 +16,8 @@ $query = "CREATE TABLE IF NOT EXISTS `videodetails` (
   `id` int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `videoid` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
-  `thumbnail` varchar(255) NOT NULL
+  `thumbnail` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 mysqli_query($db, $query);
 
@@ -41,7 +42,6 @@ for( $i=0 ; $i < $total ; $i++ ) {
     }
     //Get the temp file path
     $tmpFilePath = $_FILES["input-thumbnail-$i"]['tmp_name'];
-
     //Make sure we have a file path
     if ($tmpFilePath != ""){
         //Setup our new file path
@@ -53,8 +53,9 @@ for( $i=0 ; $i < $total ; $i++ ) {
         if(move_uploaded_file($tmpFilePath, $newFilePath)) {
             $videoid = $_POST["input-videoid-$i"];
             $videotitle = $_POST["input-title-$i"];
-            $query = "INSERT INTO videodetails (videoid, title, thumbnail) 
-					  VALUES('$videoid', '$videotitle', '$newFilePath')";
+            $descript = $_POST["input-description-$i"];
+            $query = "INSERT INTO videodetails (videoid, title, thumbnail, description) 
+					  VALUES('$videoid', '$videotitle', '$newFilePath', '$descript')";
             mysqli_query($db, $query);
             $query = "INSERT INTO videoratings (videoid, likes, dislikes) 
 					  VALUES('$videoid', 0, 0)";

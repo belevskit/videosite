@@ -130,7 +130,8 @@
           `id` int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
           `videoid` int(11) NOT NULL,
           `title` varchar(255) NOT NULL,
-          `thumbnail` varchar(255) NOT NULL
+          `thumbnail` varchar(255) NOT NULL,
+          `description` varchar(255) NOT NULL
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
         mysqli_query($db, $query);
         $query = "SELECT id, filename FROM videos";
@@ -138,13 +139,13 @@
 
         while ($list = mysqli_fetch_assoc($results)) {
             $vidid = $list['id'];
-            $query2 = "SELECT title, thumbnail FROM videodetails WHERE videoid='$vidid'";
+            $query2 = "SELECT title, thumbnail, description FROM videodetails WHERE videoid='$vidid'";
             $results2 = mysqli_query($db, $query2);
             $viddetails = mysqli_fetch_assoc($results2)
             ?>
                 <article class="video">
                 <figure> <?php
-                echo '<a class="fancybox fancybox.iframe" target="_blank" href="playvideo.php?id=' . $vidid . '&url=' . urlencode($_SERVER['REQUEST_URI'] . 'users/' . $list['filename']) . '&title=' . urlencode($viddetails['title']) .'"><img class="videoThumb" src="' . $_SERVER['REQUEST_URI'] . 'users/' . $viddetails['thumbnail'] . '"></a>';
+                echo '<a class="fancybox fancybox.iframe" target="_blank" href="playvideo.php?id=' . $vidid . '&url=' . urlencode($_SERVER['REQUEST_URI'] . 'users/' . $list['filename']) . '&title=' . urlencode($viddetails['title']) . '&thumbnail=' . urlencode($viddetails['thumbnail']) . '&descrip=' . urlencode($viddetails['description']) .'"><img class="videoThumb" src="' . $_SERVER['REQUEST_URI'] . 'users/' . $viddetails['thumbnail'] .'"></a>';
                 ?>
                 </figure>
                 <h2 class="videoTitle"><?= $viddetails['title'] ?></h2>
