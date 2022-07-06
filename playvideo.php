@@ -271,7 +271,7 @@ else{
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form method="post" enctype="multipart/form-data" action="editvideo.php">
-                <input class="hide" type="text" name="id" value="<?= urlencode($_GET['id'])?>" />
+                <input hidden type="text" name="id" value="<?= urlencode($_GET['id'])?>" />
                 <div class="modal-header">
                     <h4 class="modal-title" style="color: black;">Edit the Video Details</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>

@@ -124,7 +124,8 @@ for( $i=0 ; $i < $total ; $i++ ) {
         ?>
         <label for="<?= "input-title-$i" ?>">Title for "<?= $_FILES['file']['name'][$i] ?>"</label>
         <?php
-        echo '<input id="input-title-' . $i . '" type="text" name="input-title-' . $i . '" placeholder="Title" required="">';
+        echo '<input class="form-group" id="input-title-' . $i . '" type="text" name="input-title-' . $i . '" placeholder="Title" 
+            required="" style="width: 100%; border: double; background-position: -5000px;">';
         ?>
         <label for="<?= "input-thumbnail-$i" ?>">Image (thumbnail) for "<?= $_FILES['file']['name'][$i] ?>"</label>
         <?php
@@ -133,7 +134,7 @@ for( $i=0 ; $i < $total ; $i++ ) {
         <br>
         <label for="<?= "input-title-$i" ?>">Description for "<?= $_FILES['file']['name'][$i] ?>"</label>
         <?php
-        echo '<input id="input-description-' . $i . '" type="text" name="input-description-' . $i . '" placeholder="Description" required="">';
+        echo '<textarea id="input-description-' . $i . '" type="text" name="input-description-' . $i . '" placeholder="Description" class="form-control textarea-description" required=""></textarea>';
         ?>
         <div class="clear"> </div>
         <div class="clear"> </div>

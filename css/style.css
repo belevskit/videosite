@@ -1361,7 +1361,8 @@ footer {
 .textarea-description {
     width: 100%;
     font-size: 20px;
-    color: white;
+    color: white !important;
     border: double;
     background: transparent !important;
+
 }
