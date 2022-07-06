@@ -1358,3 +1358,10 @@ footer {
 }
 
 /*# sourceMappingURL=style.css.map */
+.textarea-description {
+    width: 100%;
+    font-size: 20px;
+    color: white;
+    border: double;
+    background: transparent !important;
+}

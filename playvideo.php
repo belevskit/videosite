@@ -82,7 +82,8 @@ if(isset($_SESSION['user'])) {
                     url: "addratings.php",
                     data: { "rating": rating, "videoid": videoid },
                     success: function (data) {
-                        $('#all-likes').html(data);
+                        data = JSON.parse(data);
+                        $('#likes').text('Likes: ' + data['likes']);
                     }
                 });
             });
@@ -96,7 +97,8 @@ if(isset($_SESSION['user'])) {
                     url: "addratings.php",
                     data: { "rating": rating, "videoid": videoid },
                     success: function (data) {
-                        $('#all-likes').html(data);
+                        data = JSON.parse(data);
+                        $('#dislikes').text('Dislikes: ' + data['dislikes']);
                     }
                 });
             });
@@ -184,13 +186,14 @@ else{
     }
     ?>
     <div id="all-likes" class="d-flex justify-content-end">
-        <div style="border: double;">Likes: <?= $ratings['likes'] ?> </div>
-        <div class="ml-lg-3" style="border: double;">Dislikes: <?= $ratings['dislikes'] ?></div>
+        <div style="border: double;" id="likes">Likes: <?= $ratings['likes'] ?> </div>
+        <div class="ml-lg-3" style="border: double;" id="dislikes">Dislikes: <?= $ratings['dislikes'] ?></div>
     </div>
     <?php
         if(isset($_GET['descrip'])) {
             $descrip = urldecode($_GET['descrip']);
-            echo "<div><h3>Description:</h3><h4 id='video-descript' style='border: double;'>$descrip</h4></div>";
+            echo "<div><h3>Description:</h3><textarea id='video-descript' class='form-control textarea-description' 
+                                            readonly>$descrip</textarea></div>";
         } else {
             echo '<h3></h3>';
         }
@@ -199,7 +202,7 @@ else{
     <div>
         <div class="mt-lg-5">Comments</div>
         <div>
-            <ol id="all-comments-list" style="border: double;">
+            <ol id="all-comments-list" style="border: double; width: 100%;">
                 <?php
                     $query = "SELECT userid, comment FROM videocomments WHERE videoid='$videoid'";
                     $results = mysqli_query($db, $query);
@@ -220,16 +223,16 @@ else{
         <form id="add-comment-form" method="post" action="">
             <div class="form-group">
                 <label for="comment">Add comment</label>
-                <input type="text" class="form-control" style="border: double;" id="comment" required>
+                <input type="text" class="form-control" style="border: double; width: 100%; background-position: -50000px;" id="comment" required>
             </div>
             <button id="add-comment-button" type="submit" class="btn btn-primary">Submit comment</button>
         </form>
-        <div class="mt-lg-5 ml-1">
+        <div class="mt-lg-1 ml-lg-3">
             <div class="row">
             <form id="like-form" method="post" action="">
                 <button id="add-like-button" type="submit" class="btn btn-primary">Like video</button>
             </form>
-            <form id="dislike-form" method="post" action="" class="ml-lg-5">
+            <form id="dislike-form" method="post" action="" class="ml-lg-2">
                 <button id="add-dislike-button" type="submit" class="btn btn-primary">Dislike video</button>
             </form>
             </div>
@@ -237,12 +240,12 @@ else{
     <?php } ?>
 </div>
 
-<div class="container mt-lg-5 mb-lg-5">
+<div class="container mt-lg-2 mb-lg-2">
     <div class="row">
-        <div class=""><a href="index.php" class="btn btn-lg btn-primary">Go back</a></div>
+        <div class="ml-lg-3"><a href="index.php" class="btn btn-lg btn-primary">Go back</a></div>
         <?php if($user_logged_in) { ?>
-            <button id="btn-edit" type="button" class="btn btn-lg btn-light ml-lg-5" data-toggle="modal" data-target="#editModal">Edit</button>
-            <button id="btn-delete" type="button" class="btn btn-lg btn-danger ml-lg-5" data-toggle="modal" data-target="#myModal">Delete</button>
+            <button id="btn-edit" type="button" class="btn btn-lg btn-light ml-lg-2" data-toggle="modal" data-target="#editModal">Edit</button>
+            <button id="btn-delete" type="button" class="btn btn-lg btn-danger ml-lg-2" data-toggle="modal" data-target="#myModal">Delete</button>
         <?php } ?>
     </div>
 </div>
@@ -288,8 +291,9 @@ else{
                     </div>
                     <div>
                         <label>Description</label>
-                        <input type="text" id="modal-video-description" name="descript" class="form-control" style="width: 100%;
-                                border-color: black!important; color: black;" value="<?= urldecode($_GET['descrip'])?>"/>
+                        <textarea type="text" id="modal-video-description" name="descript" class="form-control" style="width: 100%;
+                                border-color: black!important; color: black;"><?= urldecode($_GET['descrip'])?>
+                        </textarea>
                     </div>
 
                 </div>
@@ -340,39 +344,7 @@ else{
             });
         });
     });
-    //$('#editModal').on('shown.bs.modal', function (e) {
-    //    $('#modal-video-title').val($('#video-title').text());
-    //    $('#modal-video-descrip').val($('#video-descript').text());
-    //    $('#btn-real-edit').click(function () {
-    //        var title = $('#modal-video-title').val();
-    //        var descript = $('#modal-video-description').val();
-    //        var thumbnail = $('#editModal').find("[type='file'].fileupload");
-    //        var id = <?//= urlencode($_GET['id'])?>//;
-    //        var file = thumbnail[0].files[0];
-    //        var formData = new FormData();
-    //        // if (file)
-    //        //     formData.append('file', file, file.name);
-    //        $.ajax({
-    //            type: 'POST',
-    //            url: 'editvideo.php',
-    //            data: {
-    //                id: id,
-    //                title: title,
-    //                descript: descript,
-    //                thumbnail: formData
-    //            },
-    //            success: function (data) {
-    //                if (data) {
-    //                    alert("Update Successfully!");
-    //                    $('#video-title').text(title);
-    //                    $('#video-description').text(descript);
-    //                    $('#editModal').hide();
-    //                }
-    //
-    //            }
-    //        });
-    //    });
-    //});
+
 </script>
 </body>
 </html>
