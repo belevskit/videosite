@@ -174,6 +174,7 @@ for( $i=0 ; $i < $total ; $i++ ) {
 
     <script>
         $('.summernote').summernote({
+            height: 255,
             placeholder: 'Description',
             focus: true,
             disableDragAndDrop: true

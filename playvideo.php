@@ -364,15 +364,14 @@ else{
             });
         });
     });
-    var summer = $('.summernote');
-    summer.summernote({
+    $('.summernote').summernote({
         height: 255,
         placeholder: 'Description',
         focus: true,
         disableDragAndDrop: true
     });
 
-    summer.summernote('disable');
+    $('.summernote').summernote('disable');
     $('.note-toolbar').attr('hidden', true);
     $('.note-status-output').attr('hidden', true);
 </script>
