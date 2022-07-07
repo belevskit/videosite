@@ -147,6 +147,8 @@ for( $i=0 ; $i < $total ; $i++ ) {
         <?php
         echo '<textarea id="input-description-' . $i . '" type="text" name="input-description-' . $i . '" placeholder="Description" class="form-control textarea-description summernote" required=""></textarea>';
         ?>
+        <textarea type="text" name="hiddenText" class="hiddenText" hidden>
+                        </textarea>
         <div class="clear"> </div>
         <div class="clear"> </div>
         <?php
@@ -181,7 +183,10 @@ for( $i=0 ; $i < $total ; $i++ ) {
         });
         $('.note-toolbar').attr('hidden', true);
         $('.note-status-output').attr('hidden', true);
-
+        $('#input-submit').click(function () {
+            var value = $('.summernote').summernote('code');
+            $('.hiddenText').val(value);
+        });
     </script>
     </body>
 </html>

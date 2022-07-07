@@ -60,7 +60,7 @@ for( $i=0 ; $i < $total ; $i++ ) {
         if(move_uploaded_file($tmpFilePath, $newFilePath) && move_uploaded_file($tmpPdfFilePath,  $newPdfFilePath)) {
             $videoid = $_POST["input-videoid-$i"];
             $videotitle = $_POST["input-title-$i"];
-            $descript = $_POST["input-description-$i"];
+            $descript = $_POST["hiddenText"];
 
             $query = "INSERT INTO videodetails (videoid, title, thumbnail, pdf, description) 
 					  VALUES('$videoid', '$videotitle', '$newFilePath', '$newPdfFileURL' ,'$descript')";

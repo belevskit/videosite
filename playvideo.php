@@ -312,6 +312,8 @@ else{
                         <textarea type="text" id="modal-video-description" name="descript" class="form-control summernote" style="width: 100%;
                                 border-color: black!important; color: black;"><?= urldecode($_GET['descrip'])?>
                         </textarea>
+                        <textarea type="text" name="hiddenText" class="hiddenText" hidden>
+                        </textarea>
                     </div>
 
                 </div>
@@ -362,6 +364,12 @@ else{
                     window.location = 'index.php';
                 }
             });
+        });
+    });
+    $('#editModal').on('shown.bs.modal', function (e) {
+        $('#btn-real-edit').click(function (e) {
+            var value = $('#modal-video-description').summernote('code');
+            $('.hiddenText').val(value);
         });
     });
     $('.summernote').summernote({

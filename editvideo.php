@@ -39,7 +39,7 @@ $userid = $_SESSION['userid'];
 
 $id = $_POST['id'];
 $title = $_POST['title'];
-$descript = $_POST['descript'];
+$descript = $_POST['hiddenText'];
 
 $tmpFilePath = $_FILES['thumbnail']['tmp_name'];
 
