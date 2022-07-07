@@ -132,7 +132,7 @@
           `title` varchar(255) NOT NULL,
           `thumbnail` varchar(255) NOT NULL,
           `pdf` varchar(255) NOT NULL,
-          `description` varchar(255) NOT NULL
+          `description` blob(100000) NOT NULL
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
         mysqli_query($db, $query);
         $query = "SELECT id, filename FROM videos";

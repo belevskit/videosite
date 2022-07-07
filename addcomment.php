@@ -11,6 +11,7 @@ $query = "CREATE TABLE IF NOT EXISTS `videodetails` (
   `title` varchar(255) NOT NULL,
   `thumbnail` varchar(255) NOT NULL
   `pdf` varchar(255) NOT NULL
+  `description` blob(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 mysqli_query($db, $query);
 
@@ -27,7 +28,7 @@ $query = "CREATE TABLE IF NOT EXISTS `videocomments` (
   `id` int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `videoid` int(11) NOT NULL,
   `userid` int(11) NOT NULL,
-  `comment` varchar(255) NOT NULL
+  `comment` blob(100000) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 mysqli_query($db, $query);
 
