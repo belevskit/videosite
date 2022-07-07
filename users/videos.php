@@ -49,7 +49,13 @@ $total = count($_FILES['file']['name']);
     <link rel="stylesheet" href="../css/style.css">
     <!--[if lt IE 9]>
     <script src='//html5shiv.googlecode.com/svn/trunk/html5.js'></script>
+
+
     <![endif]-->
+
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css" rel="stylesheet">
+
 </head>
 <body>
 <!-- Navigation -->
@@ -132,9 +138,14 @@ for( $i=0 ; $i < $total ; $i++ ) {
         echo '<input type="file" id="input-thumbnail-' . $i . '" placeholder="Select file" name="input-thumbnail-' . $i . '" required="">';
         ?>
         <br>
+        <label for="<?= "input-pdf-$i" ?>">PDF (PDF file) for "<?= $_FILES['file']['name'][$i] ?>"</label>
+        <?php
+        echo '<input type="file" id="input-pdf-' . $i . '" placeholder="Select file" name="input-pdf-' . $i . '" required="">';
+        ?>
+        <br>
         <label for="<?= "input-title-$i" ?>">Description for "<?= $_FILES['file']['name'][$i] ?>"</label>
         <?php
-        echo '<textarea id="input-description-' . $i . '" type="text" name="input-description-' . $i . '" placeholder="Description" class="form-control textarea-description" required=""></textarea>';
+        echo '<textarea id="input-description-' . $i . '" type="text" name="input-description-' . $i . '" placeholder="Description" class="form-control textarea-description summernote" required=""></textarea>';
         ?>
         <div class="clear"> </div>
         <div class="clear"> </div>
@@ -153,10 +164,24 @@ for( $i=0 ; $i < $total ; $i++ ) {
         </div>
         <a href="#" class="scroll-top">↑</a>
     </footer>
+
     <script src="compiled/base.min.js"></script>
     <!-- Bootstrap core JavaScript -->
     <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.js"></script>
+
+    <script>
+        $('.summernote').summernote({
+            placeholder: 'Description',
+            focus: true,
+            disableDragAndDrop: true
+        });
+        $('.note-toolbar').attr('hidden', true);
+        $('.note-status-output').attr('hidden', true);
+
+    </script>
     </body>
 </html>
 

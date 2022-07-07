@@ -1364,5 +1364,32 @@ footer {
     color: white !important;
     border: double;
     background: transparent !important;
+}
 
+.note-editor {
+    background: transparent !important;
+    border: double !important;
+}
+
+.note-editable {
+    background: linear-gradient(to top, #76b852, #8DC26F) !important;
+    color: white !important;
+}
+.note-editable p {
+    width: 100% !important;
+    margin: 0 !important;
+}
+
+a:hover {
+    color: #0f6674 !important;
+}
+
+.modal-body .note-editable {
+    background: white !important;
+    color: black !important;
+}
+
+.modal-body .note-editor {
+    border: 1px solid black !important;
+    border-radius: 4px;
 }

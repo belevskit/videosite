@@ -60,5 +60,25 @@ else {
               WHERE videoid='$id'";
     mysqli_query($db, $query);
 }
+$tmpPdfFilePath = $_FILES['pdf']['tmp_name'];
+
+if ($tmpPdfFilePath != "") {
+    $fname_base = substr($_FILES['pdf']['name'], 0, strrpos($_FILES['pdf']['name'], "."));
+    $fname_ext = substr($_FILES['thumbnail']['name'], strrpos($_FILES['thumbnail']['name'], "."));
+    $newFilePath = $target_dir . $fname_base . "_" . strtotime("now") . $fname_ext;
+
+    if (move_uploaded_file($tmpFilePath, $newFilePath)) {
+        $newFilePath = '../' . $newFilePath;
+        $query = "UPDATE videodetails SET title='$title', thumbnail='$newFilePath', description='$descript'
+              WHERE videoid='$id'";
+        mysqli_query($db, $query);
+    }
+}
+else {
+    $query = "UPDATE videodetails SET title='$title', description='$descript'
+              WHERE videoid='$id'";
+    mysqli_query($db, $query);
+}
+
 header('location: index.php');
 ?>

@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="css/style.css?v=3">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+
     <![endif]-->
 </head>
 <body>

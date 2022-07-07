@@ -54,6 +54,9 @@ if(isset($_SESSION['user'])) {
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css" rel="stylesheet">
+
     <script>
         $(document).ready(function () {
             $('#add-comment-button').click(function (e) {
@@ -185,6 +188,14 @@ else{
         $ratings = mysqli_fetch_assoc($results);
     }
     ?>
+    <?php if($user_logged_in) { ?>
+        <?php
+            if(isset($_GET['pdf'])) {
+                $descrip = urldecode($_GET['pdf']);
+                echo "<a class='btn btn-info' href='$descrip'>Download the Pdf file</a>";
+            }
+        ?>
+    <?php } ?>
     <div id="all-likes" class="d-flex justify-content-end">
         <div style="border: double;" id="likes">Likes: <?= $ratings['likes'] ?> </div>
         <div class="ml-lg-3" style="border: double;" id="dislikes">Dislikes: <?= $ratings['dislikes'] ?></div>
@@ -192,7 +203,7 @@ else{
     <?php
         if(isset($_GET['descrip'])) {
             $descrip = urldecode($_GET['descrip']);
-            echo "<div><h3>Description:</h3><textarea id='video-descript' class='form-control textarea-description' 
+            echo "<div><h3>Description:</h3><textarea id='video-descript' class='form-control textarea-description summernote' 
                                             readonly>$descrip</textarea></div>";
         } else {
             echo '<h3></h3>';
@@ -289,9 +300,16 @@ else{
                         <input type="file" class="fileupload mb-4" name="thumbnail" style="width: 100%; border-color: black !important; color: black"
                                id="modal-video-thumbnail" value="<?= urldecode($_GET['title'])?>" />
                     </div>
+
+                    <div>
+                        <label>Pdf file</label>
+                        <p class="text-left m-0" style="font-size: 16px; width: 100%;">(If you want to change the Pdf file, click the Browse button, Or, the original file is saved.)</p>
+                        <input type="file" class="fileupload mb-4" name="pdf" style="width: 100%; border-color: black !important; color: black"
+                               id="modal-video-pdf" value="<?= urldecode($_GET['title'])?>" />
+                    </div>
                     <div>
                         <label>Description</label>
-                        <textarea type="text" id="modal-video-description" name="descript" class="form-control" style="width: 100%;
+                        <textarea type="text" id="modal-video-description" name="descript" class="form-control summernote" style="width: 100%;
                                 border-color: black!important; color: black;"><?= urldecode($_GET['descrip'])?>
                         </textarea>
                     </div>
@@ -324,6 +342,8 @@ else{
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.js"></script>
+
 <script type="text/javascript">
     jQuery(function ($) {
             $("#files").shieldUpload();
@@ -344,7 +364,17 @@ else{
             });
         });
     });
+    var summer = $('.summernote');
+    summer.summernote({
+        height: 255,
+        placeholder: 'Description',
+        focus: true,
+        disableDragAndDrop: true
+    });
 
+    summer.summernote('disable');
+    $('.note-toolbar').attr('hidden', true);
+    $('.note-status-output').attr('hidden', true);
 </script>
 </body>
 </html>

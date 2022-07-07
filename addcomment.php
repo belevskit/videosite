@@ -10,6 +10,7 @@ $query = "CREATE TABLE IF NOT EXISTS `videodetails` (
   `videoid` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
   `thumbnail` varchar(255) NOT NULL
+  `pdf` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 mysqli_query($db, $query);
 
