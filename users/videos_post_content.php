@@ -32,6 +32,15 @@ $query = "CREATE TABLE IF NOT EXISTS `videoratings` (
 mysqli_query($db, $query);
 
 
+$query = "CREATE TABLE IF NOT EXISTS `videocomments` (
+  `id` int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `videoid` int(11) NOT NULL,
+  `userid` int(11) NOT NULL,
+  `comment` blob(100000) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+mysqli_query($db, $query);
+
+
 $user = $_SESSION['user'];
 $userid = $_SESSION['userid'];
 
